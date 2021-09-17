@@ -1,9 +1,12 @@
-package br.com.devdojo.demo3;
+package br.com.devdojo;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+
 public class SpringBootEssentialsApplication {
 
     public static void main(String[] args) {
