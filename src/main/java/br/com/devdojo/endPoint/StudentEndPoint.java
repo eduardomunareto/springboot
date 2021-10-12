@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("v1")
 
 public class StudentEndPoint {
     private final StudentRepository studentDAO;
@@ -31,13 +31,13 @@ public class StudentEndPoint {
         this.studentDAO = studentDAO;
     }
 
-    @GetMapping
+    @GetMapping(path = "protected/students")
     public ResponseEntity<?> listAll(Pageable pageable) {
         return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
     }
 
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "protected/ students/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
         verifyIfStudentExists(id);
         Optional<Student> student = studentDAO.findById(id);
@@ -45,19 +45,19 @@ public class StudentEndPoint {
     }
 
 
-    @GetMapping(path = "/findByName/{name}")
+    @GetMapping(path = "protected/students/findByName/{name}")
     public ResponseEntity<?> findStudentByName(@PathVariable String name)
     {
         return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(path = "admin/students")
     @Transactional
     public ResponseEntity<?> save(@Valid @RequestBody Student student) {
         return new ResponseEntity<Object>(studentDAO.save(student), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "admin/students/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         verifyIfStudentExists(id);
@@ -65,7 +65,7 @@ public class StudentEndPoint {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping(path = "admin/students")
     public ResponseEntity<?> update(@RequestBody Student student) {
         verifyIfStudentExists(student.getId());
        studentDAO.save(student);
