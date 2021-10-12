@@ -37,7 +37,7 @@ public class StudentEndPoint {
     }
 
 
-    @GetMapping(path = "protected/ students/{id}")
+    @GetMapping(path = "protected/students/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
         verifyIfStudentExists(id);
         Optional<Student> student = studentDAO.findById(id);
